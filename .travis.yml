@@ -17,7 +17,7 @@ env:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-# Отправлять уведомление на почту mailto:youremail@smtp.ru(Изменить на свою) если сборка упала
+# Отправлять уведомление на почту mailto:spetsagrotrans@inbox.ru(Изменить на свою) если сборка упала
 notifications:
   email:
     recipients:
