@@ -1,6 +1,6 @@
 # job4j_tracker
 [![Build Status](https://travis-ci.com/evgenkolesman/job4j_grabber.svg?branch=main)](https://travis-ci.com/github/evgenkolesman/job4j_grabber)
-[![codecov](https://app.codecov.io/gh/evgenkolesman/job4j_grabber)](https://app.codecov.io/gh/evgenkolesman/job4j_grabber)
+[![codecov](https://codecov.io/gh/evgenkolesman/job4j_grabber/compare/base...head)](https://app.codecov.io/gh/evgenkolesman/job4j_grabber)
 
 This project represents basic CRUD console application and demonstrates OOP principles.
 
