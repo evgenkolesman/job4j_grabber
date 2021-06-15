@@ -21,7 +21,7 @@ after_success:
 notifications:
   email:
     recipients:
-      - evgeniysanich@mail.ru
+      - spetsagrotrans@inbox.ru
     on_success: never # default: change
     on_failure: always # default: always
 
