@@ -12,4 +12,3 @@ This project represents basic CRUD console application and demonstrates OOP prin
 - JDBC for manipulating with DB 
 - Slf4j for logging
 
-![img](./img/img.png)
