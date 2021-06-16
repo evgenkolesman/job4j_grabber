@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.lang.Integer.*;
 import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
@@ -19,19 +20,21 @@ import static org.quartz.SimpleScheduleBuilder.*;
  *
  */
 public class AlertRabbit {
+
+    private static Properties prop = new Properties();
+
     public static void main(String[] args) {
         try {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDetail job = newJob(Rabbit.class).build();
-            //InputStream cl = Rabbit.class.getResourceAsStream("rabbit.properties");
-            ClassLoader loader = Rabbit.class.getClassLoader();
-            Properties prop = new Properties();
-            try (InputStream cl = loader.getResourceAsStream("rabbit.properties")) {
+            try (InputStream cl = Rabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
                 prop.load(cl);
             }
+            int interval = parseInt(prop.getProperty("rabbit.interval"));
+            //System.out.println(interval);
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(Integer.parseInt(prop.getProperty("rabbit.interval")))
+                    .withIntervalInSeconds(interval)
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
