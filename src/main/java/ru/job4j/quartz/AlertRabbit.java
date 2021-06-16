@@ -32,7 +32,7 @@ public class AlertRabbit {
                 prop.load(cl);
             }
             int interval = parseInt(prop.getProperty("rabbit.interval"));
-            //System.out.println(interval);
+            
             SimpleScheduleBuilder times = simpleSchedule()
                     .withIntervalInSeconds(interval)
                     .repeatForever();
