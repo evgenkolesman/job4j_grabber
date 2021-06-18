@@ -29,14 +29,13 @@ public class AlertRabbit {
     private static Connection cn;
 
     public static void init() {
-        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
-            Properties config = new Properties();
-            config.load(in);
-            Class.forName(config.getProperty("driver"));
+        try {
+            propRead();
+            Class.forName(prop.getProperty("driver"));
             cn = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
+                    prop.getProperty("url"),
+                    prop.getProperty("username"),
+                    prop.getProperty("password")
             );
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -49,9 +48,7 @@ public class AlertRabbit {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDetail job = newJob(Rabbit.class).build();
-            try (InputStream cl = Rabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
-                prop.load(cl);
-            }
+            propRead();
             int interval = parseInt(prop.getProperty("rabbit.interval"));
             
             SimpleScheduleBuilder times = simpleSchedule()
@@ -67,6 +64,12 @@ public class AlertRabbit {
             cn.close();
         } catch (SchedulerException | IOException | SQLException | InterruptedException se) {
             se.printStackTrace();
+        }
+    }
+
+    private static void propRead() throws IOException {
+        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+            prop.load(in);
         }
     }
 
