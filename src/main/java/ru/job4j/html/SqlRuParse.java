@@ -28,10 +28,5 @@ public class SqlRuParse {
             Element href1 = td.parent().child(5);
             System.out.println(href1.text());
         }
-
-        /*for (Element td : row) {
-            Element href1 = td.parent().child(5);
-            System.out.println(href1.text());
-        }*/
     }
 }
