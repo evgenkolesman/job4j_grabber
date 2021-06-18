@@ -21,7 +21,8 @@ import static org.quartz.SimpleScheduleBuilder.*;
  * работа с периодично повторяющимся функционалом
  * расписание, график плюс нам необходимо извлечь данные из rabbit.properties
  * и дать их в интервал
- *
+ * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
+ * @version 1.0
  */
 public class AlertRabbit {
 
