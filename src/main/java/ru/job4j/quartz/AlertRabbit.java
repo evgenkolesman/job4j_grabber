@@ -96,4 +96,6 @@ public class AlertRabbit {
             store.add(System.currentTimeMillis());
         }
     }
+
+
 }
