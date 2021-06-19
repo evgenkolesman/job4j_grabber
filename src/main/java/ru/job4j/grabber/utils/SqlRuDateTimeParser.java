@@ -14,18 +14,17 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String parse) {
-        String d = "";
         try {
             init();
             Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
             Elements row = doc.select(".postslisttopic");
             for (Element a : row) {
                 Element href1 = a.parent().child(5);
-                d = href1.data();
+                parse = href1.data();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return LocalDateTime.parse(d);
+        return LocalDateTime.parse(parse);
     }
 }
