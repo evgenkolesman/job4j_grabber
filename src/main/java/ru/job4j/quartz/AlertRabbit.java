@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,10 +47,14 @@ public class AlertRabbit {
     public static void main(String[] args) {
         try {
             init();
+            List<Long> store = new ArrayList<>();
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
-            JobDetail job = newJob(Rabbit.class).build();
-            propRead();
+            JobDataMap data = new JobDataMap();
+            data.put("store", store);
+            JobDetail job = newJob(Rabbit.class)
+                    .usingJobData(data).build();
+            //propRead();
             int interval = parseInt(prop.getProperty("rabbit.interval"));
             
             SimpleScheduleBuilder times = simpleSchedule()
@@ -62,9 +67,13 @@ public class AlertRabbit {
             scheduler.scheduleJob(job, trigger);
             Thread.sleep(10000);
             scheduler.shutdown();
-            cn.close();
-        } catch (SchedulerException | IOException | SQLException | InterruptedException se) {
-            se.printStackTrace();
+           try{
+               cn.close();
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+        } catch (SchedulerException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
