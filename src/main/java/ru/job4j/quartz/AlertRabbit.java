@@ -45,7 +45,7 @@ public class AlertRabbit {
     }
 
     public static void main(String[] args) {
-        try {
+        try(Connection connection = cn) {
             init();
             List<Long> store = new ArrayList<>();
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -67,12 +67,8 @@ public class AlertRabbit {
             scheduler.scheduleJob(job, trigger);
             Thread.sleep(10000);
             scheduler.shutdown();
-           try{
-               cn.close();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-        } catch (SchedulerException | InterruptedException e) {
+            connection.close();
+        } catch (SchedulerException | InterruptedException  | SQLException e) {
             e.printStackTrace();
         }
     }
