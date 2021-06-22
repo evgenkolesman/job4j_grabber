@@ -45,7 +45,7 @@ public class AlertRabbit {
     }
 
     public static void main(String[] args) {
-        try(Connection connection = cn) {
+        try (Connection connection = cn) {
             init();
             List<Long> store = new ArrayList<>();
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -56,7 +56,7 @@ public class AlertRabbit {
                     .usingJobData(data).build();
             //propRead();
             int interval = parseInt(prop.getProperty("rabbit.interval"));
-            
+
             SimpleScheduleBuilder times = simpleSchedule()
                     .withIntervalInSeconds(interval)
                     .repeatForever();
@@ -68,7 +68,7 @@ public class AlertRabbit {
             Thread.sleep(10000);
             scheduler.shutdown();
             connection.close();
-        } catch (SchedulerException | InterruptedException  | SQLException e) {
+        } catch (SchedulerException | InterruptedException | SQLException e) {
             e.printStackTrace();
         }
     }
