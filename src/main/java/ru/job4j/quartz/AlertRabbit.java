@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -67,7 +68,7 @@ public class AlertRabbit {
             scheduler.scheduleJob(job, trigger);
             Thread.sleep(10000);
             scheduler.shutdown();
-            connection.close();
+            System.out.println(store);
         } catch (SchedulerException | InterruptedException | SQLException e) {
             e.printStackTrace();
         }
@@ -88,8 +89,14 @@ public class AlertRabbit {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             System.out.println("Rabbit runs here ...");
-            List<Long> store = (List<Long>) context.getJobDetail().getJobDataMap().get("store");
-            store.add(System.currentTimeMillis());
+            Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("store");
+            try (Statement statement = connection.createStatement()) {
+                String query = String.format("insert into rabbit(created_data) values ('%s');",
+                        System.currentTimeMillis());
+                statement.execute(query);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 

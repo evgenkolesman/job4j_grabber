@@ -29,9 +29,9 @@ public class SqlRuParse {
                 String vac = href.text();
                 Element href1 = td.parent().child(5);
                 String dat = href1.text();
-                //SqlRuDateTimeParser a = new SqlRuDateTimeParser();
+                SqlRuDateTimeParser a = new SqlRuDateTimeParser();
                 String url = "https://www.sql.ru/forum/job-offers";
-                String link = String.format("%s/%d%n%s%n%s%n", url, i, vac, dat);
+                String link = String.format("%s/%d%n%s%n%s%n", url, i, vac, a.parse(dat));
                 System.out.println(link);
             }
         }
