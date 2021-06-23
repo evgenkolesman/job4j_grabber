@@ -72,9 +72,9 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private int getInt(String time) {
-        if (time.matches("//d+")) {
+        /*if (time.matches("//d+")) {
             throw new IllegalArgumentException("Date wrong");
-        }
+        }*/
         return Integer.parseInt(time);
     }
 }
