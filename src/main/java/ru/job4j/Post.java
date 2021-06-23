@@ -2,6 +2,17 @@ package ru.job4j;
 
 import java.time.LocalDateTime;
 
+/*
+ * Парсинг html страниц
+ * модель типа данных Post, для получения необходимых данных со страницы
+ * @String id
+ * @String name
+ * @String table
+ * @String link
+ * @LocalDateTime created
+ * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
+ * @version 1.0
+ */
 public class Post {
 
     private final String id;
@@ -40,12 +51,11 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", table='" + table + '\'' +
-                ", link='" + link + '\'' +
-                ", created=" + created +
-                '}';
+        return "Post{"
+                + "id='" + id + '\''
+                + ", name='" + name + '\''
+                + ", table='" + table + '\''
+                + ", link='" + link + '\''
+                + ", created=" + created + '}';
     }
 }

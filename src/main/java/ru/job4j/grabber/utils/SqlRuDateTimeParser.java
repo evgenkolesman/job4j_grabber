@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
 
-    private Map<String, Integer> months =  new HashMap();
+    private Map<String, Integer> months = new HashMap();
 
     public SqlRuDateTimeParser() {
         months.put("янв", 1);
@@ -53,7 +53,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private LocalDateTime parseDate(LocalDateTime localDate,
-                                           String hours, String minutes) {
+                                    String hours, String minutes) {
         return LocalDateTime.of(localDate.getDayOfYear(),
                 localDate.getMonthValue(),
                 localDate.getDayOfMonth(),

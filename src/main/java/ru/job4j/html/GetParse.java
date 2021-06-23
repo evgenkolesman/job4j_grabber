@@ -8,6 +8,18 @@ import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
 
+/*
+ * Парсинг html страниц
+ * приводим данные по url "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t"
+ * к типу Post
+ * @String id
+ * @String name
+ * @String table
+ * @String link
+ * @LocalDateTime created
+ * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
+ * @version 1.0
+ */
 public class GetParse {
     public static Post getParse(String url) throws IOException {
         Document page = Jsoup.connect(url).get();

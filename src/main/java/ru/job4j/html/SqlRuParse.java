@@ -33,6 +33,8 @@ public class SqlRuParse {
                 String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
                 String link = String.format("%s%n%s%n%s%n", url, vac, a.parse(dat));
 
+                /*Post post = GetParse.getParse(url);
+                System.out.println(post.toString()); тут не работает*/
                 System.out.println(link);
             }
         }
