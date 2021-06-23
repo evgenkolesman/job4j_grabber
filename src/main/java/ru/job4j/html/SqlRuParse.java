@@ -22,7 +22,7 @@ public class SqlRuParse {
         /*Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
         Elements row = doc.select(".postslisttopic");*/
         for (int i = 1; i < 6; i++) {
-            Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
+            Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%s", i)).get();
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
                 Element href = td.child(0);
@@ -31,8 +31,8 @@ public class SqlRuParse {
                 Element href1 = td.parent().child(5);
                 String dat = href1.text();
                 SqlRuDateTimeParser a = new SqlRuDateTimeParser();
-                String url = "https://www.sql.ru/forum/job-offers";
-                String link = String.format("%s/%d%n%s%n%s%n", url, i, vac, a.parse(dat));
+                String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
+                String link = String.format("%s%n%s%n%s%n", url, vac, a.parse(dat));
                 System.out.println(link);
             }
         }
