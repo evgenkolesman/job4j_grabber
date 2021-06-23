@@ -5,16 +5,47 @@ import java.time.LocalDateTime;
 public class Post {
 
     private final String id;
-    private final String messageHeader;
-    private final String msgTable;
+    private final String name;
+    private final String table;
     private final String link;
     private final LocalDateTime created;
 
-    public Post(String id, String messageHeader, String msgTable, String link, LocalDateTime created) {
+    public Post(String id, String name, String table, String link, LocalDateTime created) {
         this.id = id;
-        this.messageHeader = messageHeader;
-        this.msgTable = msgTable;
+        this.name = name;
+        this.table = table;
         this.link = link;
         this.created = created;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", table='" + table + '\'' +
+                ", link='" + link + '\'' +
+                ", created=" + created +
+                '}';
     }
 }
