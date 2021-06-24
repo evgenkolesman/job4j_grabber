@@ -18,6 +18,8 @@ import java.util.List;
  * по классу
  * @class .postslisttopic
  * даты, выборка по страницам
+ * добавлены методы detail формирование типа Post и list формирует список Post
+ * реализует интерфейс Parse
  * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
  * @version 1.0
  */
