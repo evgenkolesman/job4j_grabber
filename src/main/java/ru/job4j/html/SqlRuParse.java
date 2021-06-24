@@ -9,6 +9,7 @@ import ru.job4j.Parse;
 import ru.job4j.Post;
 import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,36 +27,53 @@ import java.util.List;
 
 public class SqlRuParse implements Parse {
     public static void main(String[] args) throws Exception {
+        List<Post> listPost1 = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%s", i)).get();
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
-                Element href = td.child(0);
-                //System.out.println(href.attr("href"));
+                /*Element href = td.child(0);
                 String vac = href.text();
                 Element href1 = td.parent().child(5);
                 String dat = href1.text();
                 SqlRuDateTimeParser a = new SqlRuDateTimeParser();
                 String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
                 String link = String.format("%s%n%s%n%s%n", url, vac, a.parse(dat));
-                /*Post post = GetParse.getParse(url);
-                System.out.println(post.toString()); тут не работает*/
-                System.out.println(link);
+                System.out.println(link); получение link, данные из прошлого задания */
                 SqlRuParse e1 = new SqlRuParse();
-                System.out.println(e1.detail(url));
+                String url11 = e1.getURL(td);
+                listPost1 = e1.list(url11);
+                System.out.println(url11);
             }
         }
-        String url1 = "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
+        for (Post rr : listPost1) {
+            System.out.println(rr.toString());
+        }
+        /*String url1 = "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
         Post post = GetParse.getParse(url1);
         SqlRuParse e1 = new SqlRuParse();
-        System.out.println(e1.list(url1));
+        System.out.println(e1.list(url1))*/
     }
+
 
     @Override
     public List<Post> list(String link) {
         List<Post> listPost = new ArrayList<>();
+        List<String> listLinks = new ArrayList<>();
+        try {
+            Document doc = Jsoup.connect(link).get();
+            Elements row = doc.select(".postslisttopic");
+            for (Element td : row) {
+                //Element href = td.child(0);
+                listLinks.add(getURL(td));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // тут мы получаем url и по нему готовим список постов, с помощью detail
-        listPost.add(detail(link));
+        for (String a : listLinks) {
+            listPost.add(detail(a));
+        }
         return listPost;
     }
 
@@ -79,6 +97,11 @@ public class SqlRuParse implements Parse {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String getURL(Element row) {
+        Element href111 = row.select("td[class=postslisttopic]").first().child(0);
+        return href111.attr("href");
     }
 }
 
