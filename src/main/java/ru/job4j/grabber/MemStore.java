@@ -6,7 +6,7 @@ import java.util.List;
 
 import static ru.job4j.quartz.AlertRabbit.init;
 
-public class MemStore implements Store {
+public class MemStore implements Store, AutoCloseable {
     Connection cn;
 
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
@@ -71,5 +71,12 @@ public class MemStore implements Store {
             e.printStackTrace();
         }
         return result1;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (cn != null) {
+            cn.close();
+        }
     }
 }

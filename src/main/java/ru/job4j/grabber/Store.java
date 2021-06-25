@@ -10,4 +10,5 @@ public interface Store {
     List<ru.job4j.Post> getAll();
 
     ru.job4j.Post findById(String id);
+
 }
