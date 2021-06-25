@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.job4j.Parse;
+import ru.job4j.grabber.Parse;
 import ru.job4j.Post;
 import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
@@ -43,7 +43,7 @@ public class SqlRuParse implements Parse {
                 SqlRuParse e1 = new SqlRuParse();
                 String url11 = e1.getURL(td);
                 listPost1 = e1.list(url11);
-                System.out.println(url11);
+                //System.out.println(url11);
             }
         }
         for (Post rr : listPost1) {
