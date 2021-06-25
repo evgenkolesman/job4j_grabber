@@ -6,7 +6,7 @@ import java.util.List;
 
 import static ru.job4j.quartz.AlertRabbit.init;
 
-public class MemStore implements Store, AutoCloseable {
+public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
 
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
@@ -14,7 +14,7 @@ public class MemStore implements Store, AutoCloseable {
     public void save(ru.job4j.Post post) {
         try (Connection connection = cn) {
             init();
-            try (PreparedStatement st = connection.prepareStatement("insert into grabber(id, name, table, link, created) values(?,?,?,?,?);")) {
+            try (PreparedStatement st = connection.prepareStatement("insert into post(id, name, table, link, created) values(?,?,?,?,?);")) {
                 st.setString(1, post.getId());
                 st.setString(2, post.getName());
                 st.setString(3, post.getTable());
@@ -32,7 +32,7 @@ public class MemStore implements Store, AutoCloseable {
         List<ru.job4j.Post> posts = new ArrayList<>();
         try (Connection connection = cn) {
             init();
-            try (PreparedStatement st = connection.prepareStatement("select*from grabber;")) {
+            try (PreparedStatement st = connection.prepareStatement("select*from post;")) {
                 try (ResultSet resultSet = st.executeQuery()) {
                     while (resultSet.next()) {
                         posts.add(new ru.job4j.Post(
@@ -54,7 +54,7 @@ public class MemStore implements Store, AutoCloseable {
     @Override
     public ru.job4j.Post findById(String id) {
         ru.job4j.Post result1 = null;
-        try (PreparedStatement statement = cn.prepareStatement("select * from items where id = ?;")) {
+        try (PreparedStatement statement = cn.prepareStatement("select * from post where id = ?;")) {
             statement.setInt(1, Integer.parseInt(id));
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
