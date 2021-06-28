@@ -22,7 +22,8 @@ public class Post {
     private String link;
     private LocalDateTime created;
 
-    public Post() {}
+    public Post() {
+    }
 
     public Post(String title, String description, String link, LocalDateTime created) {
         this.title = title;

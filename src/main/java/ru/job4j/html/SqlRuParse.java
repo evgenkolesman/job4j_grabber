@@ -64,15 +64,14 @@ public class SqlRuParse implements Parse {
         List<String> listLinks = new ArrayList<>();
         try {
             Document doc = Jsoup.connect(link).get();
-            if(doc.select(".postslisttopic").hasText()) {
+            if (doc.select(".postslisttopic").hasText()) {
                 Elements row = doc.select(".postslisttopic");
                 for (Element td : row) {
                     //Element href = td.child(0);
                     listLinks.add(getURL(td));
                 }
-            }
-            else {
-                System.out.println( "Wrong url");
+            } else {
+                System.out.println("Wrong url");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,17 +88,16 @@ public class SqlRuParse implements Parse {
         //получаем ссылку и с нее выводим модель POST
         try {
             Document page = Jsoup.connect(link).get();
-            if(!(Stream.of("table[class=msgTable]", "td[class=messageHeader]", "td[class=msgFooter]").allMatch(s -> page.select(s).isEmpty()))) {
-            Element page1 = page.select("table[class=msgTable]").first();
-            String name1 = page1.select("td[class=messageHeader]").first().text();
-            String date1 = page1.select("td[class=msgFooter]").first().text().split(" \\[")[0];
-            String context1 = page1.select("td[class=msgBody]").last().text();
-            SqlRuDateTimeParser dateD = new SqlRuDateTimeParser();
-            String link1 = page1.select(("td[class=msgBody]")).first().text();
-            return new ru.job4j.grabber.Post(name1, context1, link1, dateD.parse(date1));
-            }
-            else {
-                 System.out.println("it`s wrong url, can`t find some details");
+            if (!(Stream.of("table[class=msgTable]", "td[class=messageHeader]", "td[class=msgFooter]").allMatch(s -> page.select(s).isEmpty()))) {
+                Element page1 = page.select("table[class=msgTable]").first();
+                String name1 = page1.select("td[class=messageHeader]").first().text();
+                String date1 = page1.select("td[class=msgFooter]").first().text().split(" \\[")[0];
+                String context1 = page1.select("td[class=msgBody]").last().text();
+                SqlRuDateTimeParser dateD = new SqlRuDateTimeParser();
+                String link1 = page1.select(("td[class=msgBody]")).first().text();
+                return new ru.job4j.grabber.Post(name1, context1, link1, dateD.parse(date1));
+            } else {
+                System.out.println("it`s wrong url, can`t find some details");
             }
         } catch (Exception e) {
             e.printStackTrace();
