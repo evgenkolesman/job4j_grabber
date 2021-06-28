@@ -74,7 +74,7 @@ public class AlertRabbit {
         }
     }
 
-    private static void propRead() throws IOException {
+    public static void propRead() throws IOException {
         try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
             prop.load(in);
         }

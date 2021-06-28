@@ -3,17 +3,34 @@ package ru.job4j.grabber;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static ru.job4j.quartz.AlertRabbit.init;
+import static ru.job4j.quartz.AlertRabbit.propRead;
 
 public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
+    Properties prop = new Properties();
+
+    public void PsqlStoreConnection() {
+        try {
+            propRead();
+            Class.forName(prop.getProperty("driver"));
+            cn = DriverManager.getConnection(
+                    prop.getProperty("url"),
+                    prop.getProperty("username"),
+                    prop.getProperty("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
     @Override
     public void save(ru.job4j.grabber.Post post) {
         try (Connection connection = cn) {
-            init();
+            PsqlStoreConnection();
             try (PreparedStatement st = connection.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
                 st.setString(2, post.getTitle());
                 st.setString(3, post.getTable());
