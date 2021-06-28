@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
  * @version 1.0
  */
-public class Post {
+public class Post extends ru.job4j.grabber.Post {
 
     private final String id;
     private final String name;
