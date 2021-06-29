@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static ru.job4j.quartz.AlertRabbit.init;
 import static ru.job4j.quartz.AlertRabbit.propRead;
 
 public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
     Properties prop = new Properties();
 
-    public void PsqlStoreConnection() {
+    public void psqlStoreConnection() {
         try {
             propRead();
             Class.forName(prop.getProperty("driver"));
@@ -30,7 +29,6 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public void save(ru.job4j.grabber.Post post) {
         try (Connection connection = cn) {
-            PsqlStoreConnection();
             try (PreparedStatement st = connection.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
                 st.setString(2, post.getTitle());
                 st.setString(3, post.getTable());
@@ -47,7 +45,6 @@ public class PsqlStore implements Store, AutoCloseable {
     public List<Post> getAll() {
         List<ru.job4j.grabber.Post> posts = new ArrayList<>();
         try (Connection connection = cn) {
-            init();
             try (PreparedStatement st = connection.prepareStatement("select*from post;")) {
                 try (ResultSet resultSet = st.executeQuery()) {
                     while (resultSet.next()) {

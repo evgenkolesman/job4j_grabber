@@ -41,7 +41,7 @@ public class SqlRuParse implements Parse {
                 SqlRuDateTimeParser a = new SqlRuDateTimeParser();
                 String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
                 String link = String.format("%s%n%s%n%s%n", url, vac, a.parse(dat));
-                //System.out.println(link); //получение link, данные из прошлого задания */
+                System.out.println(link); //получение link, данные из прошлого задания */
                 SqlRuParse e1 = new SqlRuParse();
                 //String url11 = e1.getURL(td);
                 listPost1 = e1.list(url);
