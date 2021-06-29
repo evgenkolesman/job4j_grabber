@@ -11,7 +11,8 @@ public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
     Properties prop = new Properties();
 
-    public void psqlStoreConnection() {
+    public Store psqlStoreConnection(Properties prop ) {
+        this.prop = prop;
         try {
             propRead();
             Class.forName(prop.getProperty("driver"));
@@ -23,6 +24,7 @@ public class PsqlStore implements Store, AutoCloseable {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+        return null;
     }
 
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
@@ -85,6 +87,13 @@ public class PsqlStore implements Store, AutoCloseable {
             e.printStackTrace();
         }
         return result1;
+    }
+
+    @Override
+    public void saveAll(List<Post> post) {
+        for(Post a : post) {
+            save(a);
+        }
     }
 
     @Override

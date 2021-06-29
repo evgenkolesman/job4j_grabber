@@ -11,4 +11,5 @@ public interface Store {
 
     ru.job4j.grabber.Post findById(String id);
 
+    void saveAll(List<Post> post);
 }
