@@ -8,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static ru.job4j.quartz.AlertRabbit.propRead;
-
 public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
-    Properties prop = new Properties();
 
-    public Store psqlStoreConnection(Properties prop) {
-        this.prop = prop;
+    public PsqlStore(Properties prop) {
         try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
             prop.load(in);
             Class.forName(prop.getProperty("driver"));
@@ -27,7 +23,6 @@ public class PsqlStore implements Store, AutoCloseable {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return null;
     }
 
 
