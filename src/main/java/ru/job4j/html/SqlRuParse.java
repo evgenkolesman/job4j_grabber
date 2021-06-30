@@ -26,36 +26,17 @@ import java.util.stream.Stream;
  */
 
 public class SqlRuParse implements Parse {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         List<ru.job4j.grabber.Post> listPost1 = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%s", i)).get();
-            Elements row = doc.select(".postslisttopic");
-            for (Element td : row) {
-                Element href = td.child(0);
-                String vac = href.text();
-                Element href1 = td.parent().child(5);
-                //System.out.println(vac);
-                String dat = href1.text();
-                SqlRuDateTimeParser a = new SqlRuDateTimeParser();
-                String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
-                String link = String.format("%s%n%s%n%s%n", url, vac, a.parse(dat));
-                System.out.println(link); //получение link, данные из прошлого задания */
-                SqlRuParse e1 = new SqlRuParse();
-                //String url11 = e1.getURL(td);
-                listPost1 = e1.list(url);
-                //System.out.println(url11);
+            SqlRuParse e1 = new SqlRuParse();
+            String url = String.format("https://www.sql.ru/forum/job-offers/%s", i);
+            listPost1.addAll(e1.list(url));
+            for (ru.job4j.grabber.Post rr : listPost1) {
+                System.out.println(rr.toString());
             }
         }
-        for (ru.job4j.grabber.Post rr : listPost1) {
-            System.out.println(rr.toString());
-        }
-        /*String url1 = "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
-        Post post = GetParse.getParse(url1);
-        SqlRuParse e1 = new SqlRuParse();
-        System.out.println(e1.list(url1))*/
     }
-
 
     @Override
     public List<ru.job4j.grabber.Post> list(String link) {
@@ -63,14 +44,10 @@ public class SqlRuParse implements Parse {
         List<String> listLinks = new ArrayList<>();
         try {
             Document doc = Jsoup.connect(link).get();
-            if (doc.select(".postslisttopic").hasText()) {
-                Elements row = doc.select(".postslisttopic");
-                for (Element td : row) {
-                    //Element href = td.child(0);
-                    listLinks.add(getURL(td));
-                }
-            } else {
-                System.out.println("Wrong url");
+            Elements row = doc.select(".postslisttopic");
+            for (Element td : row) {
+                //Element href = td.child(0);
+                listLinks.add(getURL(td));
             }
         } catch (IOException e) {
             e.printStackTrace();
