@@ -17,8 +17,7 @@ public class Grabber implements Grab {
     private final Properties cfg = new Properties();
 
     public Store store() {
-        PsqlStore a = new PsqlStore();
-        return a.psqlStoreConnection(cfg);
+        return new PsqlStore(cfg);
     }
 
     public Scheduler scheduler() throws SchedulerException {
@@ -58,7 +57,6 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            /* TODO impl logic */
             List<Post> posts = parse.list(String.valueOf(parse.getResources()));
             store.saveAll(posts);
         }
