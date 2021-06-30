@@ -1,5 +1,8 @@
 package ru.job4j.grabber;
 
+import ru.job4j.quartz.AlertRabbit;
+
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +14,10 @@ public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
     Properties prop = new Properties();
 
-    public Store psqlStoreConnection(Properties prop ) {
+    public Store psqlStoreConnection(Properties prop) {
         this.prop = prop;
-        try {
-            propRead();
+        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+            prop.load(in);
             Class.forName(prop.getProperty("driver"));
             cn = DriverManager.getConnection(
                     prop.getProperty("url"),
@@ -27,17 +30,17 @@ public class PsqlStore implements Store, AutoCloseable {
         return null;
     }
 
+
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
     @Override
     public void save(ru.job4j.grabber.Post post) {
-        try (Connection connection = cn) {
-            try (PreparedStatement st = connection.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
-                st.setString(2, post.getTitle());
-                st.setString(3, post.getTable());
-                st.setString(4, post.getLink());
-                st.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
-                st.execute();
-            }
+        try (PreparedStatement st = cn.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
+            st.setString(2, post.getTitle());
+            st.setString(3, post.getTable());
+            st.setString(4, post.getLink());
+            st.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
+            st.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,21 +49,20 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public List<Post> getAll() {
         List<ru.job4j.grabber.Post> posts = new ArrayList<>();
-        try (Connection connection = cn) {
-            try (PreparedStatement st = connection.prepareStatement("select*from post;")) {
-                try (ResultSet resultSet = st.executeQuery()) {
-                    while (resultSet.next()) {
-                        var a = new ru.job4j.grabber.Post(
-                                resultSet.getString("name"),
-                                resultSet.getString("table"),
-                                resultSet.getString("link"),
-                                resultSet.getTimestamp("created").toLocalDateTime()
-                        );
-                        a.setId(String.valueOf(resultSet.getInt("id")));
-                        posts.add(a);
-                    }
+        try (PreparedStatement st = cn.prepareStatement("select*from post;")) {
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    var a = new ru.job4j.grabber.Post(
+                            resultSet.getString("name"),
+                            resultSet.getString("table"),
+                            resultSet.getString("link"),
+                            resultSet.getTimestamp("created").toLocalDateTime()
+                    );
+                    a.setId(String.valueOf(resultSet.getInt("id")));
+                    posts.add(a);
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +93,7 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public void saveAll(List<Post> post) {
-        for(Post a : post) {
+        for (Post a : post) {
             save(a);
         }
     }

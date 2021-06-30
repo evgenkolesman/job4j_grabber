@@ -109,6 +109,14 @@ public class SqlRuParse implements Parse {
         Element href111 = row.select("td[class=postslisttopic]").first().child(0);
         return href111.attr("href");
     }
+
+    public List<String> getResources() {
+        List<String> list = new ArrayList<>();
+        for (int page = 1; page <= 5; page++) {
+            list.add(String.format("%s/%s", "https://www.sql.ru/forum/job-offers", page));
+        }
+        return list;
+    }
 }
 
 

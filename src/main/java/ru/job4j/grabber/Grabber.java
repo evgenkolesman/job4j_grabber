@@ -3,6 +3,7 @@ package ru.job4j.grabber;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import ru.job4j.html.SqlRuParse;
+import ru.job4j.quartz.AlertRabbit;
 
 import java.io.*;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
-import static ru.job4j.quartz.AlertRabbit.propRead;
 
 public class Grabber implements Grab {
     private final Properties cfg = new Properties();
@@ -28,9 +28,10 @@ public class Grabber implements Grab {
     }
 
     public void cfg() throws IOException {
-        propRead();
+        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+            cfg.load(in);
+        }
     }
-
 
     @Override
     public void init(Parse parse, Store store, Scheduler scheduler) throws SchedulerException {
@@ -58,12 +59,10 @@ public class Grabber implements Grab {
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
             /* TODO impl logic */
-            List<Post> posts = parse.list();
+            List<Post> posts = parse.list(String.valueOf(parse.getResources()));
             store.saveAll(posts);
-
         }
     }
-
 
     public static void main(String[] args) throws Exception {
         Grabber grab = new Grabber();
