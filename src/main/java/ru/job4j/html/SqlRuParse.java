@@ -88,8 +88,8 @@ public class SqlRuParse implements Parse {
 
     public List<String> getResources() {
         List<String> list = new ArrayList<>();
-        for (int page = 1; page <= 5; page++) {
-            list.add(String.format("%s/%s", "https://www.sql.ru/forum/job-offers", page));
+        for (int i = 1; i <= 5; i++) {
+            list.add(String.format("%s/%s", "https://www.sql.ru/forum/job-offers", i));
         }
         return list;
     }

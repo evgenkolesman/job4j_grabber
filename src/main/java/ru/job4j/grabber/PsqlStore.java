@@ -30,10 +30,10 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public void save(ru.job4j.grabber.Post post) {
         try (PreparedStatement st = cn.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
-            st.setString(2, post.getTitle());
-            st.setString(3, post.getTable());
-            st.setString(4, post.getLink());
-            st.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
+            st.setString(1, post.getTitle());
+            st.setString(2, post.getTable());
+            st.setString(3, post.getLink());
+            st.setTimestamp(4, Timestamp.valueOf(post.getCreated()));
             st.execute();
 
         } catch (Exception e) {
