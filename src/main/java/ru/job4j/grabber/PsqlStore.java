@@ -41,7 +41,7 @@ public class PsqlStore implements Store, AutoCloseable {
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
     @Override
     public void save(ru.job4j.grabber.Post post) {
-        try (PreparedStatement st = cn.prepareStatement("insert into post(name, text, link, created) values(?,?,?,?) on conflict do nothing();")) {
+        try (PreparedStatement st = cn.prepareStatement("insert into post(name, text, link, created) values(?,?,?,?) on conflict do nothing;")) {
             st.setString(1, post.getTitle());
             st.setString(2, post.getDiscription());
             st.setString(3, post.getLink());

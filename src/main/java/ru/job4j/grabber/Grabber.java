@@ -12,7 +12,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -76,9 +75,7 @@ public class Grabber implements Grab {
             //List<Post> posts = parse.list(String.valueOf(parse.getResources()));
             List<Post> posts = new ArrayList<>();
             for (String link : parse.getResources()) {
-                for (Post post : parse.list(link)) {
-                    posts.add(post);
-                }
+                posts.addAll(parse.list(link));
             }
             store.saveAll(posts);
         }
