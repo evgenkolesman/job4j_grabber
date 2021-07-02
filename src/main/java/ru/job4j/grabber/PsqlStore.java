@@ -37,7 +37,6 @@ public class PsqlStore implements Store, AutoCloseable {
         }
     }
 
-
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
     @Override
     public void save(ru.job4j.grabber.Post post) {
