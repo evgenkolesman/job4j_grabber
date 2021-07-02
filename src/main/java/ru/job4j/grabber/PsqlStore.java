@@ -8,6 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/*
+ * Парсинг html страниц
+ * модель типа данных Post - использование для парсинга, для получения необходимых данных со страницы
+ * @String id - автоматически присваивается в БД, поэтому его не назначаяем в конструкторе
+ * @String name
+ * @String table
+ * @String link
+ * Данный класс реализует Интерфейс Store
+ * @LocalDateTime created
+ * @author Kolesnikov Evgeniy (evgeniysanich@mail.ru)
+ * @version 1.0
+ */
 public class PsqlStore implements Store, AutoCloseable {
     Connection cn;
 
@@ -29,13 +41,12 @@ public class PsqlStore implements Store, AutoCloseable {
     // Post беру из модели данных расположенных по адресу  ru.job4j.Post
     @Override
     public void save(ru.job4j.grabber.Post post) {
-        try (PreparedStatement st = cn.prepareStatement("insert into post(name, table, link, created) values(?,?,?,?);")) {
+        try (PreparedStatement st = cn.prepareStatement("insert into post(name, text, link, created) values(?,?,?,?);")) {
             st.setString(1, post.getTitle());
-            st.setString(2, post.getTable());
+            st.setString(2, post.getDiscription());
             st.setString(3, post.getLink());
             st.setTimestamp(4, Timestamp.valueOf(post.getCreated()));
             st.execute();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +60,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 while (resultSet.next()) {
                     var a = new ru.job4j.grabber.Post(
                             resultSet.getString("name"),
-                            resultSet.getString("table"),
+                            resultSet.getString("text"),
                             resultSet.getString("link"),
                             resultSet.getTimestamp("created").toLocalDateTime()
                     );

@@ -70,7 +70,7 @@ public class SqlRuParse implements Parse {
                 String date1 = page1.select("td[class=msgFooter]").first().text().split(" \\[")[0];
                 String context1 = page1.select("td[class=msgBody]").last().text();
                 SqlRuDateTimeParser dateD = new SqlRuDateTimeParser();
-                String link1 = page1.select(("td[class=msgBody]")).first().text();
+                String link1 = link;
                 return new ru.job4j.grabber.Post(name1, context1, link1, dateD.parse(date1));
             } else {
                 System.out.println("it`s wrong url, can`t find some details");

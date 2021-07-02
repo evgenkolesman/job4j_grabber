@@ -48,7 +48,7 @@ public class Post {
         return link;
     }
 
-    public String getTable() {
+    public String getDiscription() {
         return description;
     }
 
